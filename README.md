@@ -39,7 +39,7 @@ Before installation, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone [Here](https://github.com/ernesthenry/blog-app)
+git clone https://github.com/ernesthenry/blog-app
 cd blog-app
 ```
 
