@@ -71,10 +71,28 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $post->load(['user', 'categories', 'comments.user', 'comments.replies.user']);
-        return view('posts.show', compact('post'));
+        try {
+            $post->load(['user', 'categories']);
+            
+            // Try to load comments, but catch any errors
+            if (\Illuminate\Support\Facades\Schema::hasTable('comments')) {
+                try {
+                    $post->load(['comments.user', 'comments.replies.user']);
+                } catch (\Exception $e) {
+                    // If comments loading fails, just continue without them
+                    \Log::warning('Failed to load comments: ' . $e->getMessage());
+                }
+            }
+            
+            return view('posts.show', compact('post'));
+        } catch (\Exception $e) {
+            // Log the error and show a friendly message
+            \Log::error('Post show error: ' . $e->getMessage());
+            return redirect()->route('posts.index')
+                ->with('error', 'Sorry, there was an error loading this post.');
+        }
     }
-    
+        
 
     public function edit(Post $post)
     {

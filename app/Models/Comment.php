@@ -25,19 +25,19 @@ class Comment extends Model
         'is_approved' => 'boolean'
     ];
 
-    public function user(): BelongsTo
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(\App\Models\User::class);
     }
 
-    public function post(): BelongsTo
+    public function post()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(\App\Models\Post::class);
     }
 
-    public function replies(): HasMany
+    public function replies()
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->hasMany(\App\Models\Comment::class, 'parent_id');
     }
 
     public function parent(): BelongsTo

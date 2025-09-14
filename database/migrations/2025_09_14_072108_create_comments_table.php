@@ -8,8 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        if (!Schema::hasTable('comments')) {
-            Schema::create('comments', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('content');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -18,9 +17,14 @@ return new class extends Migration
             $table->boolean('is_approved')->default(true);
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
+            
+            // Indexes for better performance
+            $table->index('post_id');
+            $table->index('user_id');
+            $table->index('parent_id');
+            $table->index('is_approved');
         });
     }
-}
 
     public function down()
     {
